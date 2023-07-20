@@ -1,34 +1,42 @@
-import express from "express"
-import { MongoClient } from 'mongodb'
-const app = express()
-const port = 80
-const client = new MongoClient("mongodb+srv://GalacticQuasar:averagejonas@skillavate.8ano7db.mongodb.net/?retryWrites=true&w=majority")
+import express from "express";
+import { MongoClient } from "mongodb";
+const app = express();
+const port = 80;
+const client = new MongoClient(
+  "mongodb+srv://GalacticQuasar:averagejonas@skillavate.8ano7db.mongodb.net/?retryWrites=true&w=majority"
+);
 
 async function getServices() {
   //Check Connection
-  await client.db("admin").command({ ping: 1 })
-  console.log("Pinged your deployment. You successfully connected to MongoDB!")
-  
-  const services_list = client.db("skillavate").collection("services_list")
-  console.log()
+  await client.db("admin").command({ ping: 1 });
+  console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-  await client.close()
+  const services_list = client.db("skillavate").collection("services_list");
+  return await services_list.find().toArray();
 }
-run().catch(console.dir)
+getServices().catch(console.error);
 
-app.use(express.static('public'))
-app.set('view engine', 'ejs')
-app.use(express.urlencoded({ extended: true }))
+app.use(express.static("public"));
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.render('home')
-})
+app.get("/", (req, res) => {
+  res.render("home");
+});
 
-app.post('/', (req, res) => {
-    console.log(req.body.content)
-    res.send(`You typed: ${req.body.content}<br><br>Sent data: ${JSON.stringify(req.body)}`)
-})
+app.post("/", (req, res) => {
+  console.log(req.body.content);
+  res.send(
+    `You typed: ${req.body.content}<br><br>Sent data: ${JSON.stringify(
+      req.body
+    )}`
+  );
+});
+
+app.get("/api/servicelist", async (req, res) => {
+  res.send(await getServices());
+});
 
 app.listen(port, () => {
-    console.log(`Skillavate App listening on port ${port}`)
-})
+  console.log(`Skillavate App listening on port ${port}`);
+});
