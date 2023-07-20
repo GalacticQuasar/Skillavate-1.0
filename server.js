@@ -1,10 +1,11 @@
 import express from "express";
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
 const port = 80;
-const client = new MongoClient(
-  "mongodb+srv://GalacticQuasar:averagejonas@skillavate.8ano7db.mongodb.net/?retryWrites=true&w=majority"
-);
+const client = new MongoClient(process.env.mongoUrl);
 
 async function getServices() {
   //Check Connection
