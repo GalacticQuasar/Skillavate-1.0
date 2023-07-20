@@ -1,18 +1,18 @@
 import express from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
 const port = 80;
 const client = new MongoClient(process.env.mongoUrl);
+const services_list = client.db("skillavate").collection("services_list");
 
 async function getServices() {
   //Check Connection
   await client.db("admin").command({ ping: 1 });
   console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-  const services_list = client.db("skillavate").collection("services_list");
   return await services_list.find().toArray();
 }
 getServices().catch(console.error);
@@ -36,6 +36,10 @@ app.post("/", (req, res) => {
 
 app.get("/api/servicelist", async (req, res) => {
   res.send(await getServices());
+});
+
+app.get("/service/:id", async (req, res) => {
+  res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
 });
 
 app.listen(port, () => {
