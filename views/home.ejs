@@ -1,32 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Test application</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="description" content="" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="icon" href="favicon.png" />
-  </head>
-  <body>
-    <h1>Wassup, world!</h1>
-    <form action="/" method="POST">
-      <label>First name:</label><br />
-      <input type="text" name="content" /><br />
-      <input type="submit" value="SUBBMITT" />
-    </form>
-    <div id="servicelist"></div>
-    <script>
-      (async () => {
-        (await fetch("/api/servicelist").then((res) => res.json())).forEach(
-          (elem) => {
-            let newElem = document.createElement("a");
-            newElem.innerHTML = elem.title;
-            newElem.href = `/service/${elem._id}`;
-            document.getElementById("servicelist").appendChild(newElem);
-          }
-        );
-      })();
-    </script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Skillavate</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href="/favicon.png" />
+		<link rel="stylesheet" type="text/css" href="/style.css" />
+	</head>
+	<body>
+		<h1>Welcome to Skillavate!</h1>
+		<form id="createService">
+			<label>Service Name:</label>
+			<input type="text" name="serviceName" />
+			<label>Service Description:</label>
+			<input type="text" name="serviceDescription" />
+			<h3 id="confirmationMessage"></h3>
+			<input type="submit" value="Submit" />
+		</form>
+		<div id="servicelist"></div>
+		<script>
+			(async () => {
+				(await fetch("/api/servicelist").then((res) => res.json())).forEach(
+					(elem) => {
+						let element = document.createElement("a");
+						element.innerHTML = elem.name;
+						element.href = `/service/${elem._id}`;
+						document.getElementById("servicelist").appendChild(element);
+					}
+				);
+			})();
+
+			document
+				.getElementById("createService")
+				.addEventListener("submit", async (event) => {
+					event.preventDefault();
+					let name = document.querySelector('input[name="serviceName"]').value;
+					const postData = await fetch("/", {
+						headers: {
+							Accept: "application/json",
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							name,
+							description: document.querySelector(
+								'input[name="serviceDescription"]'
+							).value,
+						}),
+						method: "POST",
+					}).then((res) => res.json());
+
+					let confirmationMessageElem = document.getElementById(
+						"confirmationMessage"
+					);
+
+					if (postData.ok && postData.message && postData.id) {
+						confirmationMessageElem.style = "color: #00ffbf;";
+						confirmationMessageElem.innerHTML = postData.message;
+
+						let newElem = document.createElement("a");
+						newElem.href = `/service/${postData.id}`;
+						newElem.innerHTML = name;
+						document.getElementById("servicelist").appendChild(newElem);
+					} else {
+						confirmationMessageElem.style = "color: red;";
+						confirmationMessageElem.innerHTML = "An error has occurred";
+					}
+				});
+		</script>
+	</body>
 </html>

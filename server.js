@@ -9,39 +9,72 @@ const client = new MongoClient(process.env.mongoUrl);
 const services_list = client.db("skillavate").collection("services_list");
 
 async function getServices() {
-  //Check Connection
-  await client.db("admin").command({ ping: 1 });
-  console.log("Pinged your deployment. You successfully connected to MongoDB!");
+	let list = await services_list.find().toArray();
+	list.forEach((elem) => {
+		delete elem.description;
+	});
 
-  return await services_list.find().toArray();
+	return list;
 }
-getServices().catch(console.error);
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.render("home");
+	res.render("home");
 });
 
-app.post("/", (req, res) => {
-  console.log(req.body.content);
-  res.send(
-    `You typed: ${req.body.content}<br><br>Sent data: ${JSON.stringify(
-      req.body
-    )}`
-  );
+app.post("/", async (req, res) => {
+	console.log(req.body);
+	// res.send(
+	// 	`You entered:<br><br>Service Name: ${req.body.name}<br>Service Description: ${req.body.description}`
+	// );
+	// res.redirect(301, "/");
+
+	if (
+		typeof req.body.name != "string" ||
+		typeof req.body.description != "string"
+	) {
+		res.send({ ok: false, message: "Invalid Data!", id: null });
+		return;
+	}
+
+	await services_list
+		.insertOne({
+			name: req.body.name,
+			description: req.body.description,
+		})
+		.then((response) => {
+			res.send({
+				ok: true,
+				message: "Successfully Added Your Service!!!!!",
+				id: response.insertedId.toString(),
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+			res.send({ ok: false, message: "", id: null });
+			return null;
+		});
 });
 
 app.get("/api/servicelist", async (req, res) => {
-  res.send(await getServices());
+	res.send(await getServices());
 });
 
 app.get("/service/:id", async (req, res) => {
-  res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
+	const service = await services_list.findOne({
+		_id: new ObjectId(req.params.id),
+	});
+
+	res.render("viewService", {
+		serviceName: service.name,
+		serviceDescription: service.description,
+	});
+	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
 });
 
 app.listen(port, () => {
-  console.log(`Skillavate App listening on port ${port}`);
+	console.log(`Skillavate App listening on port ${port}`);
 });
