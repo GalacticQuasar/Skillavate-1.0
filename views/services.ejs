@@ -13,8 +13,8 @@
 		<!-- Header -->
 		<%- include('partials/header') %>
 
-		<!-- Filter Section -->
 		<div class="container mt-4">
+			<!-- Filter Section -->
 			<div class="row">
 				<div class="col">
 					<label for="location">Location:</label>
@@ -48,14 +48,11 @@
 				</div>
 			</div>
 
+			<!-- Divider -->
 			<hr style="border-top: 1px solid var(--dark-color)" />
 
-			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-				<div class="col-12">
-					<!-- Services Grid -->
-					<div id="servicelist" class="card-columns"></div>
-				</div>
-			</div>
+			<!-- Services Grid -->
+			<div id="servicelist" class="row row-cols-3 g-100"></div>
 		</div>
 
 		<!-- Footer -->
@@ -64,19 +61,23 @@
 		<script>
 			(async () => {
 				(await fetch("/api/servicelist").then((res) => res.json())).forEach((elem) => {
-					let cardDiv = document.createElement("div");
-					cardDiv.setAttribute("class", "card custom-card");
+					let gridDiv = document.createElement("div");
+					gridDiv.setAttribute("class", "col");
+					gridDiv.style = "margin-top: 20px;";
 
-					cardDiv.innerHTML = `<div class="card-body">
-                                            <h5 class="card-title" style="color: var(--primary-color)">${elem.name}</h5>
-                                            <p class="card-text">${elem.description}</p>
-                                            <a
-                                                href="/service/${elem._id}"
-                                                class="btn btn-primary"
-                                                style="background-color: var(--primary-color); border: none; border-radius: 10px"
-                                                >Go somewhere</a
-                                            >
-                                        </div>`;
+					gridDiv.innerHTML = `
+					<div class="card custom-card">
+					<img class="card-img-top" src="/skillavate-icon.svg" alt="Card image cap" width="50" height="100">
+					<div class="card-body">
+						<h5 class="card-title" style="color: var(--primary-color)">${elem.name}</h5>
+						<p class="card-text">${elem.description}</p>
+						<a
+							href="/service/${elem._id}"
+							class="btn btn-primary"
+							>View Service</a
+						>
+					</div>
+				</div>`;
 
 					// let cardBodyDiv = document.createElement("div");
 					// cardBodyDiv.setAttribute("class", "card-body");
@@ -101,7 +102,7 @@
 					// cardBodyDiv.appendChild(viewServiceBtn);
 					// cardDiv.appendChild(cardBodyDiv);
 
-					document.getElementById("servicelist").appendChild(cardDiv);
+					document.getElementById("servicelist").appendChild(gridDiv);
 				});
 			})();
 		</script>

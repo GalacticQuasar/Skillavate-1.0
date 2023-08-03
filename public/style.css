@@ -10,15 +10,19 @@ body {
 /* Custom color theme */
 :root {
 	--primary-color: #008ca8;
-	--secondary-color: #5a5a5a;
+	--secondary-color: #008ca88a;
 	--light-color: #f8f8f8;
 	--dark-color: #333;
 }
 
-.btn:focus,
-.btn:active {
-	outline: none !important;
-	box-shadow: none !important;
+.btn {
+	border: none;
+	background-color: var(--primary-color);
+	border-radius: 10px;
+}
+
+.btn:hover {
+	background-color: var(--secondary-color);
 }
 
 .custom-card {
