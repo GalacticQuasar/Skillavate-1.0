@@ -10,10 +10,6 @@ const services_list = client.db("skillavate").collection("services_list");
 
 async function getServices() {
 	let list = await services_list.find().toArray();
-	list.forEach((elem) => {
-		delete elem.description;
-	});
-
 	return list;
 }
 
@@ -32,10 +28,7 @@ app.post("/", async (req, res) => {
 	// );
 	// res.redirect(301, "/");
 
-	if (
-		typeof req.body.name != "string" ||
-		typeof req.body.description != "string"
-	) {
+	if (typeof req.body.name != "string" || typeof req.body.description != "string") {
 		res.send({ ok: false, message: "Invalid Data!", id: null });
 		return;
 	}
@@ -73,6 +66,10 @@ app.get("/service/:id", async (req, res) => {
 		serviceDescription: service.description,
 	});
 	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
+});
+
+app.get("/services", (req, res) => {
+	res.render("services");
 });
 
 app.listen(port, () => {
