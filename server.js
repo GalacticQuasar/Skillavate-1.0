@@ -24,18 +24,18 @@ app.get("/", (req, res) => {
 app.post("/", async (req, res) => {
 	console.log(req.body);
 	// res.send(
-	// 	`You entered:<br><br>Service Name: ${req.body.name}<br>Service Description: ${req.body.description}`
+	// 	`You entered:<br><br>Service Title: ${req.body.title}<br>Service Description: ${req.body.description}`
 	// );
 	// res.redirect(301, "/");
 
-	if (typeof req.body.name != "string" || typeof req.body.description != "string") {
+	if (typeof req.body.title != "string" || typeof req.body.description != "string") {
 		res.send({ ok: false, message: "Invalid Data!", id: null });
 		return;
 	}
 
 	await services_list
 		.insertOne({
-			name: req.body.name,
+			title: req.body.title,
 			description: req.body.description,
 		})
 		.then((response) => {
@@ -62,7 +62,7 @@ app.get("/service/:id", async (req, res) => {
 	});
 
 	res.render("viewService", {
-		serviceName: service.name,
+		serviceTitle: service.title,
 		serviceDescription: service.description,
 	});
 	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
