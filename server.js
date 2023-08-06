@@ -7,7 +7,8 @@ const app = express();
 const port = 80;
 const client = new MongoClient(process.env.mongoUrl);
 const services_list = client.db("skillavate").collection("services_list");
-
+const skill_requests = client.db("skillavate").collection("skill_requests");
+app.use(express.urlencoded({ extended: true })) // for form data
 async function getServices() {
 	let list = await services_list.find().toArray();
 	return list;
@@ -55,7 +56,20 @@ app.post("/", async (req, res) => {
 app.get("/api/servicelist", async (req, res) => {
 	res.send(await getServices());
 });
+app.get("/addService", (req, res) => {
+	res.render("addService");
+});
+app.post("/addService/submit", (req, res) => {
+	let info= req.body; 
+	services_list.insertOne({title: info.title, description: info.description, location: info.location, skillgroup: info.skillgroup, skill: info.skill, phone:info.phone,email:info.email,website:info.website, photoURL:info.photo})
 
+	res.redirect("/")
+});
+app.post("/addService/request", (req, res) => {
+	let info= req.body; 
+	skill_requests.insertOne({request: info.suggest})
+	res.redirect("/addService")
+});
 app.get("/service/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),
