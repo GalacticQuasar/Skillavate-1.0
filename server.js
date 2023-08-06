@@ -61,7 +61,7 @@ app.get("/addService", (req, res) => {
 });
 app.post("/addService/submit", (req, res) => {
 	let info= req.body; 
-	services_list.insertOne({title: info.title, description: info.description, location: info.location, skillgroup: info.skillgroup, skill: info.skill, phone:info.phone,email:info.email,website:info.website, photoURL:info.photo})
+	services_list.insertOne({title: info.title, description: info.description, location: info.location, skillgroup: info.skillgroup, skill: info.skill, phone:info.phone,email:info.email,website:info.website, photoURL:info.photo, public: "true"})
 
 	res.redirect("/")
 });
