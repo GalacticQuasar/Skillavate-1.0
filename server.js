@@ -8,6 +8,7 @@ const port = 80;
 const client = new MongoClient(process.env.mongoUrl);
 const services_list = client.db("skillavate").collection("experimental_list");
 const filter_options = client.db("skillavate").collection("filter_options");
+const skill_requests = client.db("skillavate").collection("skill_requests");
 
 async function getServices(pSkill, pPublic) {
 	console.log(pSkill);
@@ -40,7 +41,7 @@ async function getServices(pSkill, pPublic) {
 	}
 
 	filter.public = pPublic;
-
+	const skill_requests = client.db("skillavate").collection("skill_requests");
 	console.log(filter);
 	let list = await services_list.find(filter).toArray();
 	return list;
@@ -59,6 +60,7 @@ async function getOptions() {
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // for form data
 
 app.get("/", (req, res) => {
 	res.render("home");
@@ -72,7 +74,56 @@ app.post("/api/servicelist", async (req, res) => {
 app.get("/api/filteroptions", async (req, res) => {
 	res.send(await getOptions());
 });
+app.get("/addService", (req, res) => {
+	res.render("addService");
+});
+app.post("/addService/submit", (req, res) => {
+	let info = req.body;
+	services_list.insertOne({
+		title: info.title,
+		description: info.description,
+		location: info.location,
+		skillgroup: info.skillgroup,
+		skill: info.skill,
+		phone: info.phone,
+		email: info.email,
+		website: info.website,
+		photoURL: info.photo,
+		public: "true",
+	});
 
+	res.redirect("/");
+});
+app.post("/addService/request", (req, res) => {
+	let info = req.body;
+	skill_requests.insertOne({ request: info.suggest });
+	res.redirect("/addService");
+});
+app.get("/addService", (req, res) => {
+	res.render("addService");
+});
+app.post("/addService/submit", (req, res) => {
+	let info = req.body;
+	services_list.insertOne({
+		title: info.title,
+		description: info.description,
+		location: info.location,
+		skillgroup: info.skillgroup,
+		skill: info.skill,
+		phone: info.phone,
+		email: info.email,
+		website: info.website,
+		photoURL: info.photo,
+		public: "true",
+	});
+
+	res.redirect("/");
+});
+app.post("/addService/request", (req, res) => {
+	let info = req.body;
+	skill_requests.insertOne({ request: info.suggest });
+	res.redirect("/addService");
+});
 app.get("/service/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),
