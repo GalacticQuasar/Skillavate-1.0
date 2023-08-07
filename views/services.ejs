@@ -13,25 +13,32 @@
 		<!-- Header -->
 		<%- include('partials/header') %>
 
-		<div class="container mt-4">
+		<div class="container mt-3">
 			<!-- Filter Section -->
-			<div class="row">
-				<div class="col">
-					<label for="skill-group">Skill Group:</label>
-					<select id="skill-group" class="form-select">
-						<!-- Skill Group Dropdown -->
+			<div class="row" style="min-height: 50px">
+				<div class="col" style="background: var(--dark-color); border-radius: 20px">
+					<h3 style="color: var(--light-color); font-size: x-large; text-align: center; margin: 10px">Skill Group:</h3>
+					<select
+						id="skill-group"
+						class="form-select"
+						style="font-size: large; border-width: 5px; border-radius: 15px; border-color: var(--primary-color)">
+						<!-- Skill Dropdown -->
 					</select>
 				</div>
-				<div class="col">
-					<label for="skill">Skill:</label>
-					<select id="skill" class="form-select">
+				<div class="col-1" style="margin-bottom: 110px"></div>
+				<div class="col" style="background: var(--dark-color); border-radius: 20px">
+					<h3 style="color: var(--light-color); font-size: x-large; text-align: center; margin: 10px">Skill:</h3>
+					<select
+						id="skill"
+						class="form-select"
+						style="font-size: large; border-width: 5px; border-radius: 15px; border-color: var(--primary-color)">
 						<!-- Skill Dropdown -->
 					</select>
 				</div>
 			</div>
 
 			<!-- Divider -->
-			<hr style="border-top: 3px solid var(--dark-color)" />
+			<hr style="border-top: 10px solid var(--dark-color); border-radius: 5px" />
 
 			<!-- Services Grid -->
 			<div id="servicelist" class="row row-cols-3 g-100"></div>

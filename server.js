@@ -11,17 +11,14 @@ const filter_options = client.db("skillavate").collection("filter_options");
 const skill_requests = client.db("skillavate").collection("skill_requests");
 
 async function getServices(pSkill, pPublic) {
-	console.log(pSkill);
 	let filter = {};
 
 	if (pSkill != null) {
 		if (typeof pSkill == "string") {
 			if (pSkill == "All") {
 				//Do not insert skill query, skillGroup is "All"
-				console.log("ALL GROUPS");
 			} else {
 				filter.skill = pSkill;
-				console.log("SPECIFIC SKILL");
 			}
 		} else {
 			let orExpression = [];
@@ -31,8 +28,6 @@ async function getServices(pSkill, pPublic) {
 			});
 
 			filter.$or = orExpression;
-			console.log("SKILL GROUP");
-			console.log(orExpression);
 		}
 	}
 
@@ -42,7 +37,6 @@ async function getServices(pSkill, pPublic) {
 
 	filter.public = pPublic;
 	const skill_requests = client.db("skillavate").collection("skill_requests");
-	console.log(filter);
 	let list = await services_list.find(filter).toArray();
 	return list;
 }
@@ -51,8 +45,6 @@ async function getOptions() {
 	let options = await filter_options.findOne({ _id: new ObjectId("64cc5b04e5ec108305168ff8") });
 
 	delete options._id;
-
-	//options = JSON.parse(JSON.stringify(options));
 
 	return options;
 }
@@ -74,9 +66,39 @@ app.post("/api/servicelist", async (req, res) => {
 app.get("/api/filteroptions", async (req, res) => {
 	res.send(await getOptions());
 });
+
 app.get("/addService", (req, res) => {
 	res.render("addService");
 });
+
+app.post("/addService/submit", (req, res) => {
+	let info = req.body;
+	services_list.insertOne({
+		title: info.title,
+		description: info.description,
+		location: info.location,
+		skillgroup: info.skillgroup,
+		skill: info.skill,
+		phone: info.phone,
+		email: info.email,
+		website: info.website,
+		photoURL: info.photo,
+		public: "true", //default
+	});
+
+	res.redirect("/");
+});
+
+app.post("/addService/request", (req, res) => {
+	let info = req.body;
+	skill_requests.insertOne({ request: info.suggest });
+	res.redirect("/addService");
+});
+
+app.get("/addService", (req, res) => {
+	res.render("addService");
+});
+
 app.post("/addService/submit", (req, res) => {
 	let info = req.body;
 	services_list.insertOne({
@@ -94,36 +116,7 @@ app.post("/addService/submit", (req, res) => {
 
 	res.redirect("/");
 });
-app.post("/addService/request", (req, res) => {
-	let info = req.body;
-	skill_requests.insertOne({ request: info.suggest });
-	res.redirect("/addService");
-});
-app.get("/addService", (req, res) => {
-	res.render("addService");
-});
-app.post("/addService/submit", (req, res) => {
-	let info = req.body;
-	services_list.insertOne({
-		title: info.title,
-		description: info.description,
-		location: info.location,
-		skillgroup: info.skillgroup,
-		skill: info.skill,
-		phone: info.phone,
-		email: info.email,
-		website: info.website,
-		photoURL: info.photo,
-		public: "true",
-	});
 
-	res.redirect("/");
-});
-app.post("/addService/request", (req, res) => {
-	let info = req.body;
-	skill_requests.insertOne({ request: info.suggest });
-	res.redirect("/addService");
-});
 app.get("/service/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),
