@@ -17,39 +17,21 @@
 			<!-- Filter Section -->
 			<div class="row">
 				<div class="col">
-					<label for="location">Location:</label>
-					<select id="location" class="form-control">
-						<option value="all">All Locations</option>
-						<!-- Location Dropdown -->
-						<option value="location1">Location 1</option>
-						<option value="location2">Location 2</option>
-						<option value="location3">Location 3</option>
-					</select>
-				</div>
-				<div class="col">
 					<label for="skill-group">Skill Group:</label>
-					<select id="skill-group" class="form-control">
-						<option value="all">All Skill Groups</option>
+					<select id="skill-group" class="form-select">
 						<!-- Skill Group Dropdown -->
-						<option value="group1">Skill Group 1</option>
-						<option value="group2">Skill Group 2</option>
-						<option value="group3">Skill Group 3</option>
 					</select>
 				</div>
 				<div class="col">
 					<label for="skill">Skill:</label>
-					<select id="skill" class="form-control">
-						<option value="all">All Skills</option>
+					<select id="skill" class="form-select">
 						<!-- Skill Dropdown -->
-						<option value="skill1">Skill 1</option>
-						<option value="skill2">Skill 2</option>
-						<option value="skill3">Skill 3</option>
 					</select>
 				</div>
 			</div>
 
 			<!-- Divider -->
-			<hr style="border-top: 1px solid var(--dark-color)" />
+			<hr style="border-top: 3px solid var(--dark-color)" />
 
 			<!-- Services Grid -->
 			<div id="servicelist" class="row row-cols-3 g-100"></div>
@@ -59,52 +41,136 @@
 		<%- include('partials/footer') %>
 
 		<script>
+			// Filter Options
 			(async () => {
-				(await fetch("/api/servicelist").then((res) => res.json())).forEach((elem) => {
+				filter_options = await fetch("/api/filteroptions").then((res) => res.json());
+
+				// Populate Skill Group Selector
+				for (let skillGroup in filter_options) {
+					let option = document.createElement("option");
+
+					option.value = skillGroup;
+					option.label = skillGroup;
+
+					document.getElementById("skill-group").appendChild(option);
+				}
+
+				updateSkills();
+				updateServiceGrid(
+					await fetch("/api/servicelist", {
+						method: "POST",
+						headers: {
+							Accept: "application/json",
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							skill: null,
+							public: "true",
+						}),
+					}).then((res) => res.json())
+				);
+			})();
+
+			// Populate Skill Selector
+			function updateSkills() {
+				selectElem = document.getElementById("skill");
+				let skillGroup = document.getElementById("skill-group").value;
+				let skills = filter_options[skillGroup];
+
+				selectElem.innerHTML = "";
+
+				if (typeof skills == "string") {
+					let option = document.createElement("option");
+
+					option.value = skills;
+					option.label = skills;
+
+					selectElem.appendChild(option);
+				} else {
+					for (let i = 0; i < skills.length; i++) {
+						let option = document.createElement("option");
+
+						option.value = skills[i];
+						option.label = skills[i];
+
+						selectElem.appendChild(option);
+					}
+				}
+			}
+
+			async function groupFilter() {
+				await updateSkills();
+
+				let querySkill;
+
+				querySkill = filter_options[document.getElementById("skill-group").value];
+
+				updateServiceGrid(
+					await fetch("/api/servicelist", {
+						method: "POST",
+						headers: {
+							Accept: "application/json",
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							skill: querySkill,
+							public: "true",
+						}),
+					}).then((res) => res.json())
+				);
+			}
+
+			async function skillFilter() {
+				let querySkill;
+
+				querySkill = document.getElementById("skill").value;
+
+				updateServiceGrid(
+					await fetch("/api/servicelist", {
+						method: "POST",
+						headers: {
+							Accept: "application/json",
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							skill: querySkill,
+							public: "true",
+						}),
+					}).then((res) => res.json())
+				);
+			}
+
+			// Event Listeners
+			document.getElementById("skill-group").addEventListener("change", groupFilter);
+			document.getElementById("skill").addEventListener("change", skillFilter);
+
+			// Populate Service Grid
+			async function updateServiceGrid(serviceList) {
+				console.log(serviceList);
+				document.getElementById("servicelist").innerHTML = "";
+
+				serviceList.forEach((elem) => {
 					let gridDiv = document.createElement("div");
 					gridDiv.setAttribute("class", "col");
 					gridDiv.style = "margin-top: 20px;";
 
 					gridDiv.innerHTML = `
 					<div class="card custom-card">
-					<img class="card-img-top" src="/skillavate-icon.svg" alt="Card image cap" width="50" height="100">
-					<div class="card-body">
-						<h5 class="card-title" style="color: var(--primary-color)">${elem.title}</h5>
-						<p class="card-text">${elem.description}</p>
-						<a
-							href="/service/${elem._id}"
-							class="btn btn-primary"
-							>View Service</a
-						>
-					</div>
-				</div>`;
-
-					// let cardBodyDiv = document.createElement("div");
-					// cardBodyDiv.setAttribute("class", "card-body");
-
-					// let cardTitleElem = document.createElement("h5");
-					// cardTitleElem.setAttribute("class", "card-title");
-					// cardTitleElem.style = "color: var(--primary-color)";
-					// cardTitleElem.innerHTML = elem.title;
-
-					// let cardDescription = document.createElement("p");
-					// cardDescription.setAttribute("class", "card-text");
-					// cardDescription.innerHTML = elem.description;
-
-					// let viewServiceBtn = document.createElement("a");
-					// viewServiceBtn.setAttribute("class", "btn btn-primary");
-					// viewServiceBtn.href = `/service/${elem._id}`;
-					// viewServiceBtn.style = "background-color: var(--primary-color); border: none; border-radius: 10px";
-					// viewServiceBtn.innerHTML = "View Service";
-
-					// cardBodyDiv.appendChild(cardTitleElem);
-					// cardBodyDiv.appendChild(cardDescription);
-					// cardBodyDiv.appendChild(viewServiceBtn);
-					// cardDiv.appendChild(cardBodyDiv);
+						<img class="card-img-top" src="/skillavate-icon.svg" alt="Card image cap" width="50" height="100">
+						<div class="card-body">
+							<h5 class="card-title" style="color: var(--primary-color)">${elem.title}</h5>
+							<p class="card-text">${elem.description}</p>
+							<a
+								href="/service/${elem._id}"
+								class="btn btn-primary"
+								>View Service</a
+							>
+						</div>
+					</div>`;
 
 					document.getElementById("servicelist").appendChild(gridDiv);
 				});
-			})();
+			}
 		</script>
 	</body>
 </html>

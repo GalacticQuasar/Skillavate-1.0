@@ -5,6 +5,7 @@ html {
 
 body {
 	margin-bottom: 150px; /* Margin bottom by footer height */
+	font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 /* Custom color theme */
@@ -15,14 +16,23 @@ body {
 	--dark-color: #333;
 }
 
+.form-select {
+	color: var(--primary-color);
+	border-radius: 10px;
+}
+
 .btn {
 	border: none;
-	background-color: var(--primary-color);
+	background-color: var(--primary-color) !important;
 	border-radius: 10px;
 }
 
 .btn:hover {
-	background-color: var(--secondary-color);
+	background-color: var(--secondary-color) !important;
+}
+
+.btn:active {
+	background-color: var(--dark-color) !important;
 }
 
 .custom-card {

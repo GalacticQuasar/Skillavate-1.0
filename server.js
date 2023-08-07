@@ -6,11 +6,54 @@ dotenv.config();
 const app = express();
 const port = 80;
 const client = new MongoClient(process.env.mongoUrl);
-const services_list = client.db("skillavate").collection("services_list");
+const services_list = client.db("skillavate").collection("experimental_list");
+const filter_options = client.db("skillavate").collection("filter_options");
 
-async function getServices() {
-	let list = await services_list.find().toArray();
+async function getServices(pSkill, pPublic) {
+	console.log(pSkill);
+	let filter = {};
+
+	if (pSkill != null) {
+		if (typeof pSkill == "string") {
+			if (pSkill == "All") {
+				//Do not insert skill query, skillGroup is "All"
+				console.log("ALL GROUPS");
+			} else {
+				filter.skill = pSkill;
+				console.log("SPECIFIC SKILL");
+			}
+		} else {
+			let orExpression = [];
+
+			pSkill.forEach((skillName) => {
+				orExpression.push({ skill: skillName });
+			});
+
+			filter.$or = orExpression;
+			console.log("SKILL GROUP");
+			console.log(orExpression);
+		}
+	}
+
+	if (pPublic == null) {
+		pPublic = "true";
+	}
+
+	filter.public = pPublic;
+
+	console.log(filter);
+	let list = await services_list.find(filter).toArray();
 	return list;
+}
+
+async function getOptions() {
+	let options = await filter_options.findOne({ _id: new ObjectId("64cc5b04e5ec108305168ff8") });
+
+	delete options._id;
+
+	//options = JSON.parse(JSON.stringify(options));
+
+	return options;
 }
 
 app.use(express.static("public"));
@@ -21,39 +64,13 @@ app.get("/", (req, res) => {
 	res.render("home");
 });
 
-app.post("/", async (req, res) => {
-	console.log(req.body);
-	// res.send(
-	// 	`You entered:<br><br>Service Title: ${req.body.title}<br>Service Description: ${req.body.description}`
-	// );
-	// res.redirect(301, "/");
-
-	if (typeof req.body.title != "string" || typeof req.body.description != "string") {
-		res.send({ ok: false, message: "Invalid Data!", id: null });
-		return;
-	}
-
-	await services_list
-		.insertOne({
-			title: req.body.title,
-			description: req.body.description,
-		})
-		.then((response) => {
-			res.send({
-				ok: true,
-				message: "Successfully Added Your Service!!!!!",
-				id: response.insertedId.toString(),
-			});
-		})
-		.catch((err) => {
-			console.error(err);
-			res.send({ ok: false, message: "", id: null });
-			return null;
-		});
+// API
+app.post("/api/servicelist", async (req, res) => {
+	res.send(await getServices(req.body.skill, req.body.public));
 });
 
-app.get("/api/servicelist", async (req, res) => {
-	res.send(await getServices());
+app.get("/api/filteroptions", async (req, res) => {
+	res.send(await getOptions());
 });
 
 app.get("/service/:id", async (req, res) => {
