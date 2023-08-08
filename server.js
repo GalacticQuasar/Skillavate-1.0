@@ -67,6 +67,7 @@ app.get("/api/filteroptions", async (req, res) => {
 	res.send(await getOptions());
 });
 
+// ADD SERVICES PAGE
 app.get("/addService", (req, res) => {
 	res.render("addService");
 });
@@ -95,26 +96,14 @@ app.post("/addService/request", (req, res) => {
 	res.redirect("/addService");
 });
 
-app.get("/addService", (req, res) => {
-	res.render("addService");
+// SIGN UP PAGE
+app.get("/signup", (req, res) => {
+	res.render("signup");
 });
 
-app.post("/addService/submit", (req, res) => {
-	let info = req.body;
-	services_list.insertOne({
-		title: info.title,
-		description: info.description,
-		location: info.location,
-		skillgroup: info.skillgroup,
-		skill: info.skill,
-		phone: info.phone,
-		email: info.email,
-		website: info.website,
-		photoURL: info.photo,
-		public: "true",
-	});
-
-	res.redirect("/");
+// LOG IN PAGE
+app.get("/login", (req, res) => {
+	res.render("login");
 });
 
 app.get("/service/:id", async (req, res) => {
