@@ -40,6 +40,15 @@ async function getServices(pSkill, pPublic) {
 	let list = await services_list.find(filter).toArray();
 	return list;
 }
+async function getOwnServices(tutorID) {
+	let filter = {};
+
+	
+	filter.tutorID = tutorID;
+	const skill_requests = client.db("skillavate").collection("skill_requests");
+	let list = await services_list.find(filter).toArray();
+	return list;
+}
 
 async function getOptions() {
 	let options = await filter_options.findOne({ _id: new ObjectId("64cc5b04e5ec108305168ff8") });
@@ -62,11 +71,16 @@ app.get("/", (req, res) => {
 app.post("/api/servicelist", async (req, res) => {
 	res.send(await getServices(req.body.skill, req.body.public));
 });
-
+app.post("/api/ownservicelist", async (req, res) => {
+	res.send(await getOwnServices(req.body.tutorID));
+});
 app.get("/api/filteroptions", async (req, res) => {
 	res.send(await getOptions());
 });
-
+//TUTOR DASHBOARD PAGE
+app.get("/TutorDash", (req, res) => {
+	res.render("tutorDash");
+});
 // ADD SERVICES PAGE
 app.get("/addService", (req, res) => {
 	res.render("addService");
@@ -88,6 +102,22 @@ app.post("/addService/submit", (req, res) => {
 	});
 
 	res.redirect("/");
+});
+app.post("/editService/submit", (req, res) => {
+	let info = req.body;
+	
+	services_list.updateOne({
+		_id: new ObjectId(req.params.id)
+	}, {$set:{title: info.title,
+		description: info.description,
+		location: info.location,
+		phone: info.phone,
+		email: info.email,
+		website: info.website,
+		photoURL: info.photo,
+		public: info.public }});
+		res.redirect("/tutorDash");
+		
 });
 
 app.post("/addService/request", (req, res) => {
@@ -114,6 +144,24 @@ app.get("/service/:id", async (req, res) => {
 	res.render("viewService", {
 		serviceTitle: service.title,
 		serviceDescription: service.description,
+	});
+	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
+});
+app.get("/editService/:id", async (req, res) => {
+	const service = await services_list.findOne({
+		_id: new ObjectId(req.params.id),
+	});
+
+	res.render("editService", {
+		serviceID: service._id,
+		serviceTitle: service.title,
+		serviceDescription: service.description,
+		serviceZipcode: service.location,
+		servicePhone: service.phone,
+		serviceEmail: service.email,
+		serviceWebsite: service.website,
+		servicePhoto: service.photoURL,
+		servicePublic: service.public,
 	});
 	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
 });
