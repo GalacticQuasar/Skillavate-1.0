@@ -107,7 +107,7 @@ app.post("/editService/submit", (req, res) => {
 	let info = req.body;
 	
 	services_list.updateOne({
-		_id: new ObjectId(req.params.id)
+		_id: new ObjectId(info.serviceID)
 	}, {$set:{title: info.title,
 		description: info.description,
 		location: info.location,
@@ -115,7 +115,7 @@ app.post("/editService/submit", (req, res) => {
 		email: info.email,
 		website: info.website,
 		photoURL: info.photo,
-		public: info.public }});
+		public: info.validateCheck }});
 		res.redirect("/tutorDash");
 		
 });

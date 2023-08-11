@@ -10,7 +10,10 @@
   </head>
   <body>
     
-    <form action="/editService/submit" method="post" name="myForm">
+    <form action="/editService/submit" method="post" name="myForm" >
+        <input type="hidden" name="serviceID" value="<%= serviceID %>">
+        <input type="hidden" name="validateCheck" id="servicePublic" value="<%= servicePublic %>">
+        
         <fieldset>
             <label class="form-label"><h2>Title</h2></label>
             <input required type="text" id="enter-title" name="title" class="form-control" value="<%= serviceTitle %>"/>
@@ -41,9 +44,9 @@
             <h2>Website</h2>
             <input class="form-control" type="text" name="website" value="<%= serviceWebsite %>"/>
             <h2>Photo Url</h2>
-            <input type="text" id="photo-url" name="photo" class="form-control" checked="<%= servicePhoto %>"/>
+            <input type="text" id="photo-url" name="photo" class="form-control" value="<%= servicePhoto %>"/>
             <h2>Public</h2>
-            <input type="checkbox" name="public" class="form-check-input" checked="true"/>
+            <input type="checkbox" name="public" class="form-check-input" id="publicCheck"/>
         </fieldset>
         <button class="btn" style="margin: 25px auto" type="submit" onclick="return submitform('action','event')">
             Submit
@@ -52,6 +55,7 @@
 </div>
 
 <script>
+
     function submitform(action, event) {
         let f = document.forms["myForm"];
 
@@ -60,9 +64,30 @@
             alert("Please fill out atleast one contact info");
             return false;
         }
-
+        if(document.getElementById("publicCheck").checked)
+        document.getElementById("servicePublic").setAttribute("value","true");
+        else
+        document.getElementById("servicePublic").setAttribute("value","false");
         return true;
     }
+     function checkedd(){
+        
+        const c = document.querySelector("#servicePublic");
+        
+        return c.value==="true";
+     }
+    function setCheck(){
+        
+        if(checkedd())
+        {
+            const publicity = document.querySelector("#publicCheck");
+            
+
+        publicity.setAttribute("checked","true");
+    }}
+    window.onload=setCheck;
+    
+    
 </script>
   </body>
 </html>
