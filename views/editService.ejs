@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Skillavate</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/orig-style.css" />
+  </head>
+  <body>
+    
+    <form action="/editService/submit" method="post" name="myForm" >
+        <input type="hidden" name="serviceID" value="<%= serviceID %>">
+        <input type="hidden" name="validateCheck" id="servicePublic" value="<%= servicePublic %>">
+        
+        <fieldset>
+            <label class="form-label"><h2>Title</h2></label>
+            <input required type="text" id="enter-title" name="title" class="form-control" value="<%= serviceTitle %>"/>
+            <label for="enter-description"><h2>Description</h2></label>
+            <textarea class="form-control" name="description" id="enter-description" required><%= serviceDescription %></textarea>
+        </fieldset>
+        <fieldset>
+            <label for="enter-location"><h2>Zip Code:</h2></label>
+            <input
+                type="text"
+                required
+                class="form-control"
+                name="location"
+                id="enter-location"
+                maxlength="5"
+                minlength="5"
+                value="<%= serviceZipcode %>"
+            />
+        </fieldset>
+        <fieldset>
+            <hr style="border-top: 1px solid var(--dark-color)" />
+            <div class="text-center"><h1 class="">Contact Info</h1></div>
+
+            <h2>Phone</h2>
+            <input class="form-control" type="text" name="phone" value="<%= servicePhone %>"/>
+            <h2>Email</h2>
+            <input class="form-control" type="email" name="email" value="<%= serviceEmail %>" />
+            <h2>Website</h2>
+            <input class="form-control" type="text" name="website" value="<%= serviceWebsite %>"/>
+            <h2>Photo Url</h2>
+            <input type="text" id="photo-url" name="photo" class="form-control" value="<%= servicePhoto %>"/>
+            <h2>Public</h2>
+            <input type="checkbox" name="public" class="form-check-input" id="publicCheck"/>
+        </fieldset>
+        <button class="btn" style="margin: 25px auto" type="submit" onclick="return submitform('action','event')">
+            Submit
+        </button>
+    </form>
+</div>
+
+<script>
+
+    function submitform(action, event) {
+        let f = document.forms["myForm"];
+
+        if (!(f.email.value != "" || f.phone.value != "" || f.website.value != "")) {
+            //TODO: verify valid email, phone number, and website link format
+            alert("Please fill out atleast one contact info");
+            return false;
+        }
+        if(document.getElementById("publicCheck").checked)
+        document.getElementById("servicePublic").setAttribute("value","true");
+        else
+        document.getElementById("servicePublic").setAttribute("value","false");
+        return true;
+    }
+     function checkedd(){
+        
+        const c = document.querySelector("#servicePublic");
+        
+        return c.value==="true";
+     }
+    function setCheck(){
+        
+        if(checkedd())
+        {
+            const publicity = document.querySelector("#publicCheck");
+            
+
+        publicity.setAttribute("checked","true");
+    }}
+    window.onload=setCheck;
+    
+    
+</script>
+  </body>
+</html>
