@@ -36,7 +36,6 @@ async function getServices(pSkill, pPublic) {
 	}
 
 	filter.public = pPublic;
-	const skill_requests = client.db("skillavate").collection("skill_requests");
 	let list = await services_list.find(filter).toArray();
 	return list;
 }
@@ -67,12 +66,7 @@ app.get("/api/filteroptions", async (req, res) => {
 	res.send(await getOptions());
 });
 
-// ADD SERVICES PAGE
-app.get("/addService", (req, res) => {
-	res.render("addService");
-});
-
-app.post("/addService/submit", (req, res) => {
+app.post("/api/addService", (req, res) => {
 	let info = req.body;
 	services_list.insertOne({
 		title: info.title,
@@ -90,10 +84,15 @@ app.post("/addService/submit", (req, res) => {
 	res.redirect("/");
 });
 
-app.post("/addService/request", (req, res) => {
+app.post("/api/requestSkill", (req, res) => {
 	let info = req.body;
 	skill_requests.insertOne({ request: info.suggest });
 	res.redirect("/addService");
+});
+
+// ADD SERVICES PAGE
+app.get("/addService", (req, res) => {
+	res.render("addService");
 });
 
 // SIGN UP PAGE

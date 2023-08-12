@@ -13,40 +13,42 @@
 		<!-- Header -->
 		<%- include('partials/header') %>
 
-		<div
-			class="container"
-			style="
-				margin-top: 30px;
-				background-color: var(--primary-color);
-				padding-top: 20px;
-				padding-bottom: 20px;
-				width: max(25%, 400px);
-			"
-		>
-			<div class="text-center"><h1>Service Information</h1></div>
-			<hr style="border-top: 1px solid var(--dark-color)" />
-			<form action="/addService/submit" method="post" name="myForm">
+		<div class="container mt-4 skillavate-form">
+			<h1 style="color: var(--primary-color); text-align: center">Service Information Form</h1>
+			<hr style="border-top: 3px solid var(--light-color)" />
+			<form action="/api/addService" method="post" name="myForm">
 				<fieldset>
-					<label class="form-label"><h2>Title</h2></label>
-					<input required type="text" id="enter-title" name="title" class="form-control" />
-					<label for="enter-description"><h2>Description</h2></label>
-					<textarea class="form-control" name="description" id="enter-description" required></textarea>
+					<label class="skillavate-label"><h2>Title</h2></label>
+					<input
+						placeholder="Ex: Algebra 1 tutoring"
+						required
+						type="text"
+						id="enter-title"
+						name="title"
+						class="skillavate-input form-control" />
+					<label for="enter-description" class="skillavate-label"><h2>Description</h2></label>
+					<textarea
+						required
+						class="skillavate-input form-control"
+						name="description"
+						id="enter-description"
+						placeholder="Something about your service and yourself"></textarea>
 				</fieldset>
 				<fieldset>
-					<label for="enter-location"><h2>Zip Code:</h2></label>
+					<label for="enter-location" class="skillavate-label"><h2>Zip Code:</h2></label>
 					<input
+						placeholder="(This will be used to give relevant search results to users)"
 						type="text"
 						required
-						class="form-control"
+						class="skillavate-input form-control"
 						name="location"
 						id="enter-location"
 						maxlength="5"
-						minlength="5"
-					/>
+						minlength="5" />
 				</fieldset>
 				<fieldset>
-					<label for="enter-skill-group"> <h2>Skill Group:</h2></label>
-					<select required class="form-select" id="enter-skill-group" name="skillgroup">
+					<label for="enter-skill-group" class="skillavate-label">Skill Group</label>
+					<select required class="skillavate-select form-select" id="enter-skill-group" name="skillgroup">
 						<option value="">None</option>
 						<option value="1">Skill Group 1</option>
 						<option value="2">Skill Group 2</option>
@@ -55,56 +57,47 @@
 				</fieldset>
 
 				<fieldset>
-					<label> <h2>Skills:</h2></label>
+					<label class="skillavate-label"> <h2>Skills:</h2></label>
 					<div class="form-check">
 						<input type="checkbox" class="form-check-input" id="enter-skill-1" name="skill" value="1" />
-						<label for="enter-skill-1" class="form-check-label"><h4>Skill 1</h4></label>
+						<label for="enter-skill-1" class="skillavate-label-check"><h4>Skill 1</h4></label>
 					</div>
 					<div class="form-check">
 						<input type="checkbox" class="form-check-input" id="enter-skill-2" name="skill" value="2" />
-						<label for="enter-skill-2" class="form-check-label"><h4>Skill 2</h4></label>
+						<label for="enter-skill-2" class="skillavate-label-check"><h4>Skill 2</h4></label>
 					</div>
 					<div class="form-check">
 						<input type="checkbox" class="form-check-input" id="enter-skill-3" name="skill" value="3" />
-						<label for="enter-skill-3" class="form-check-label"><h4>Skill 3</h4></label>
+						<label for="enter-skill-3" class="skillavate-label-check"><h4>Skill 3</h4></label>
 					</div>
 				</fieldset>
 				<fieldset>
-					<hr style="border-top: 1px solid var(--dark-color)" />
-					<div class="text-center"><h1 class="">Contact Info</h1></div>
+					<hr style="border-top: 3px solid var(--light-color)" />
+					<h1 class="text-center">Contact Info</h1>
+					<p class="text-center">This information will not go on your service until</p>
 
-					<h2>Phone</h2>
-					<input class="form-control" type="text" name="phone" />
+					<label class="skillavate-label">Phone</label>
+					<input class="skillavate-input form-control" type="text" name="phone" />
 					<h2>Email</h2>
-					<input class="form-control" type="email" name="email" />
+					<input class="skillavate-input form-control" type="email" name="email" />
 					<h2>Website</h2>
-					<input class="form-control" type="text" name="website" />
+					<input class="skillavate-input form-control" type="text" name="website" />
 					<h2>Photo Url</h2>
-					<input type="text" id="photo-url" name="photo" class="form-control" />
+					<input class="skillavate-input form-control" type="text" id="photo-url" name="photo" />
 				</fieldset>
 				<button class="btn" style="margin: 25px auto" type="submit" onclick="return submitform('action','event')">
 					Submit
 				</button>
 			</form>
 		</div>
-		<form
-			class="container"
-			style="
-				margin-top: 30px;
-				background-color: #008ca8;
-				color: white;
-				padding-top: 20px;
-				padding-bottom: 20px;
-				width: max(25%, 400px);
-			"
-			action="addService/request"
-			method="post"
-		>
+		<form class="skillavate-form container" action="api/requestSkill" method="post">
 			<div>
-				<label for="suggest-skill" class="form-check-label"><h2>Request a skill to be added</h2></label>
-				<input type="input" class="form-control" id="suggest-skill" name="suggest" required />
+				<label for="suggest-skill" class="skillavate-label form-check-label"
+					><h2>Request a skill to be added</h2></label
+				>
+				<input type="input" class="skillavate-input form-control" id="suggest-skill" name="suggest" required />
 			</div>
-			<button style="background-color: #008ca88a; color: white" style="margin: 25px auto" type="submit">Submit</button>
+			<button class="btn" type="submit">Submit</button>
 		</form>
 		<script>
 			function submitform(action, event) {

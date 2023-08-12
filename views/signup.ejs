@@ -17,7 +17,7 @@
 			class="container"
 			style="
 				margin-top: 30px;
-				background-color: #008ca88a;
+				background-color: var(--primary-color);
 				padding-top: 20px;
 				padding-bottom: 20px;
 				width: max(25%, 400px);
@@ -31,11 +31,11 @@
 					<label for="last"><h2>Last Name</h2></label>
 					<input required type="text" id="enter-last-name" name="lastName" class="form-control" />
 					<label for="user"><h2>Email</h2></label>
-					<input required type="text" id="enter-email" name="email" class="form-control" />
+					<input required type="email" id="enter-email" name="email" class="form-control" />
 					<label for="pass"><h2>Password</h2></label>
-					<input required type="text" class="form-control" name="password" id="enter-password" />
+					<input required type="password" class="form-control" name="password" id="enter-password" />
 					<label for="confirmation"><h2>Comfirm Password</h2></label>
-					<input required type="text" class="form-control" name="confirmPass" id="confirm-password" />
+					<input required type="password" class="form-control" name="confirmPass" id="confirm-password" />
 				</fieldset>
 				<button class="btn" style="margin: 25px auto" type="submit" onclick="return submitform('action','event')">
 					Submit
