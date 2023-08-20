@@ -149,9 +149,7 @@ app.get("/service/:id", async (req, res) => {
 app.get("/TutorDash", (req, res) => {
 	res.render("tutorDash");
 });
-
-// EDIT SERVICES PAGE
-app.get("/editService/:id", async (req, res) => {
+app.get("/tutorDash/editService/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),
 	});
