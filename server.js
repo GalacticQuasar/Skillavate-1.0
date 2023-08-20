@@ -57,36 +57,31 @@ async function getOptions() {
 	return options;
 }
 
+// Middleware
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // for form data
 
-app.get("/", (req, res) => {
-	res.render("home");
-});
-
 // API
 app.post("/api/servicelist", async (req, res) => {
 	res.send(await getServices(req.body.skill, req.body.public));
 });
+
 app.post("/api/ownservicelist", async (req, res) => {
 	res.send(await getOwnServices(req.body.tutorID));
 });
+
 app.get("/api/filteroptions", async (req, res) => {
 	res.send(await getOptions());
 });
-//TUTOR DASHBOARD PAGE
-app.get("/TutorDash", (req, res) => {
-	res.render("tutorDash");
-});
-app.post("/api/addService", (req, res) => {
+
+app.post("/api/addService", async (req, res) => {
 	let info = req.body;
-	services_list.insertOne({
+	let document = await services_list.insertOne({
 		title: info.title,
 		description: info.description,
 		location: info.location,
-		skillgroup: info.skillgroup,
 		skill: info.skill,
 		phone: info.phone,
 		email: info.email,
@@ -95,10 +90,17 @@ app.post("/api/addService", (req, res) => {
 		public: "true", //default
 	});
 
+	if (info.suggest != null) {
+		skill_requests.insertOne({
+			request: info.suggest,
+			serviceID: document.insertedId,
+		});
+	}
+
 	res.redirect("/");
 });
 
-app.post("/editService/submit", (req, res) => {
+app.post("/api/updateService", (req, res) => {
 	let info = req.body;
 
 	services_list.updateOne(
@@ -121,27 +123,17 @@ app.post("/editService/submit", (req, res) => {
 	res.redirect("/tutorDash");
 });
 
-app.post("/api/requestSkill", (req, res) => {
-	let info = req.body;
-	skill_requests.insertOne({ request: info.suggest });
-	res.redirect("/addService");
+// HOME PAGE
+app.get("/", (req, res) => {
+	res.render("home");
 });
 
-// ADD SERVICES PAGE
-app.get("/addService", (req, res) => {
-	res.render("addService");
+// SERVICES PAGE
+app.get("/services", (req, res) => {
+	res.render("services");
 });
 
-// SIGN UP PAGE
-app.get("/signup", (req, res) => {
-	res.render("signup");
-});
-
-// LOG IN PAGE
-app.get("/login", (req, res) => {
-	res.render("login");
-});
-
+// VIEW SERVICE PAGE
 app.get("/service/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),
@@ -151,8 +143,14 @@ app.get("/service/:id", async (req, res) => {
 		serviceTitle: service.title,
 		serviceDescription: service.description,
 	});
-	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
 });
+
+// TUTOR DASHBOARD PAGE
+app.get("/TutorDash", (req, res) => {
+	res.render("tutorDash");
+});
+
+// EDIT SERVICES PAGE
 app.get("/editService/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),
@@ -169,11 +167,21 @@ app.get("/editService/:id", async (req, res) => {
 		servicePhoto: service.photoURL,
 		servicePublic: service.public,
 	});
-	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
 });
 
-app.get("/services", (req, res) => {
-	res.render("services");
+// ADD SERVICES PAGE
+app.get("/addService", (req, res) => {
+	res.render("addService");
+});
+
+// SIGN UP PAGE
+app.get("/signup", (req, res) => {
+	res.render("signup");
+});
+
+// LOG IN PAGE
+app.get("/login", (req, res) => {
+	res.render("login");
 });
 
 app.listen(port, () => {

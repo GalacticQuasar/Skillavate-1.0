@@ -6,7 +6,7 @@
 		<meta name="theme-color" content="#008ca8" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="/style.css" />
-		<link rel="icon" href="skillavate-icon.ico" />
+		<link rel="icon" href="/skillavate-icon.ico" />
 		<title>Skillavate</title>
 	</head>
 	<body>
@@ -21,6 +21,7 @@
 					<label class="skillavate-label"><h2>Title</h2></label>
 					<input
 						placeholder="Ex: Algebra 1 tutoring"
+						oninvalid="alert('Please enter a title for your service')"
 						required
 						type="text"
 						id="enter-title"
@@ -29,15 +30,17 @@
 					<label for="enter-description" class="skillavate-label"><h2>Description</h2></label>
 					<textarea
 						required
+						oninvalid="alert('Please enter a description for your service.')"
 						class="skillavate-input form-control"
 						name="description"
 						id="enter-description"
-						placeholder="Something about your service and yourself"></textarea>
+						placeholder="Tell us about what you offer in your service, and maybe even a little bit about yourself!"></textarea>
 				</fieldset>
 				<fieldset>
-					<label for="enter-location" class="skillavate-label"><h2>Zip Code:</h2></label>
+					<label for="enter-location" class="skillavate-label"><h2>Zip Code</h2></label>
 					<input
 						placeholder="(This will be used to give relevant search results to users)"
+						oninvalid="alert('Please enter a valid zip code (5 characters)')"
 						type="text"
 						required
 						class="skillavate-input form-control"
@@ -46,68 +49,146 @@
 						maxlength="5"
 						minlength="5" />
 				</fieldset>
-				<fieldset>
-					<label for="enter-skill-group" class="skillavate-label">Skill Group</label>
-					<select required class="skillavate-select form-select" id="enter-skill-group" name="skillgroup">
-						<option value="">None</option>
-						<option value="1">Skill Group 1</option>
-						<option value="2">Skill Group 2</option>
-						<option value="3">Skill Group 3</option>
-					</select>
-				</fieldset>
+
+				<hr style="border-top: 3px solid var(--light-color); margin-top: 30px" />
 
 				<fieldset>
-					<label class="skillavate-label"> <h2>Skills:</h2></label>
-					<div class="form-check">
-						<input type="checkbox" class="form-check-input" id="enter-skill-1" name="skill" value="1" />
-						<label for="enter-skill-1" class="skillavate-label-check"><h4>Skill 1</h4></label>
-					</div>
-					<div class="form-check">
-						<input type="checkbox" class="form-check-input" id="enter-skill-2" name="skill" value="2" />
-						<label for="enter-skill-2" class="skillavate-label-check"><h4>Skill 2</h4></label>
-					</div>
-					<div class="form-check">
-						<input type="checkbox" class="form-check-input" id="enter-skill-3" name="skill" value="3" />
-						<label for="enter-skill-3" class="skillavate-label-check"><h4>Skill 3</h4></label>
-					</div>
+					<label for="enter-skill-group" class="skillavate-label" style="margin-top: 0px">Skill Group</label>
+					<select required class="skillavate-select" id="skill-group" style="height: 45px"></select>
 				</fieldset>
 				<fieldset>
-					<hr style="border-top: 3px solid var(--light-color)" />
+					<label class="skillavate-label">
+						<h2>Skills:</h2>
+						<h5 style="margin-bottom: 20px">(Select whichever skills are relevant to your service)</h5></label
+					>
+					<div id="skills"></div>
+					<!-- Hidden Skill Request Form -->
+					<div id="requestSkillDiv">
+						<button class="btn" type="button" onclick="return revealSkillRequestForm()">Request a Skill</button>
+					</div>
+				</fieldset>
+
+				<hr style="border-top: 3px solid var(--light-color)" />
+
+				<fieldset>
 					<h1 class="text-center">Contact Info</h1>
-					<p class="text-center">This information will not go on your service until</p>
+					<p class="text-center">
+						Fill out
+						<u>at least one</u>
+						of the three fields below so that users may contact you regarding your service.
+					</p>
 
-					<label class="skillavate-label">Phone</label>
-					<input class="skillavate-input form-control" type="text" name="phone" />
-					<h2>Email</h2>
-					<input class="skillavate-input form-control" type="email" name="email" />
-					<h2>Website</h2>
-					<input class="skillavate-input form-control" type="text" name="website" />
-					<h2>Photo Url</h2>
-					<input class="skillavate-input form-control" type="text" id="photo-url" name="photo" />
+					<h2 class="mt-4">Phone</h2>
+					<input
+						class="skillavate-input form-control"
+						type="tel"
+						name="phone"
+						placeholder="XXX-XXX-XXXX"
+						pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
+					<h2 class="mt-4">Email</h2>
+					<input class="skillavate-input form-control" type="email" name="email" placeholder="example@example.com" />
+					<h2 class="mt-4">Website</h2>
+					<input
+						class="skillavate-input form-control"
+						type="url"
+						name="website"
+						placeholder="https://www.example.com" />
+
+					<hr style="border-top: 3px solid var(--light-color); margin-top: 30px" />
+
+					<h2 class="mt-4">Photo Url (Optional)</h2>
+					<input class="skillavate-input form-control" type="image" id="photo-url" name="photo" />
 				</fieldset>
-				<button class="btn" style="margin: 25px auto" type="submit" onclick="return submitform('action','event')">
-					Submit
-				</button>
+				<br />
+				<button class="btn" type="submit" onclick="return submitform()">Submit</button>
 			</form>
 		</div>
-		<form class="skillavate-form container" action="api/requestSkill" method="post">
-			<div>
-				<label for="suggest-skill" class="skillavate-label form-check-label"
-					><h2>Request a skill to be added</h2></label
-				>
-				<input type="input" class="skillavate-input form-control" id="suggest-skill" name="suggest" required />
-			</div>
-			<button class="btn" type="submit">Submit</button>
-		</form>
-		<script>
-			function submitform(action, event) {
-				let f = document.forms["myForm"];
 
-				if (!(f.email.value != "" || f.phone.value != "" || f.website.value != "")) {
-					//TODO: verify valid email, phone number, and website link format
-					alert("Please fill out atleast one contact info");
+		<script>
+			(async () => {
+				filter_options = await fetch("/api/filteroptions").then((res) => res.json());
+				delete filter_options.All;
+
+				// Populate Skill Group Selector
+				//First Option (SELECT SKILL GROUP TO SELECT SKILLS)
+				let firstOption = document.createElement("option");
+
+				firstOption.value = "**Select a skill group here**";
+				firstOption.label = "**Select a skill group here**";
+
+				document.getElementById("skill-group").appendChild(firstOption);
+
+				for (let skillGroup in filter_options) {
+					let option = document.createElement("option");
+
+					option.value = skillGroup;
+					option.label = skillGroup;
+
+					document.getElementById("skill-group").appendChild(option);
+				}
+
+				updateSkills();
+			})();
+
+			function updateSkills() {
+				let skillsCheckbox = document.getElementById("skills");
+				let skillGroup = document.getElementById("skill-group").value;
+				let skills = filter_options[skillGroup];
+				if (skills == null) {
+					return;
+				}
+
+				skillsCheckbox.innerHTML = "";
+
+				for (let i = 1; i < skills.length; i++) {
+					let checkbox = document.createElement("checkbox");
+
+					checkbox.innerHTML = `<div class="form-check">
+											<input type="checkbox" class="form-check-input" id="${skills[i]}" name="skill" value="${skills[i]}"/>
+											<label for="${skills[i]}">${skills[i]}</label><br />
+										</div>`;
+
+					skillsCheckbox.appendChild(checkbox);
+				}
+			}
+
+			document.getElementById("skill-group").addEventListener("change", updateSkills);
+
+			//Request Skill (Reveal)
+			function revealSkillRequestForm() {
+				hiddenDiv = document.getElementById("requestSkillDiv");
+
+				hiddenDiv.innerHTML = `<label for="suggest-skill" class="skillavate-label"><h2>Request a Skill</h2></label>
+											<p style="color: white">
+												Didn't find the skill you were looking for? Request a skill here to be added! Your service will automatically update to your requested skill if it is accepted.
+											</p>
+										<input type="text" class="skillavate-input form-control" id="requestSkill" name="suggest" required />`;
+			}
+
+			function submitform() {
+				let f = document.forms["myForm"];
+				let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+				let isChecked = false;
+
+				for (var i = 0; i < checkboxes.length; i++) {
+					if (checkboxes[i].checked) {
+						isChecked = true;
+						break;
+					}
+				}
+
+				if (!isChecked || f.skill == undefined) {
+					alert(
+						"Please select at least one skill to be attributed with your service (this helps users search for relevant services)"
+					);
 					return false;
 				}
+
+				if (f.email.value == "" && f.phone.value == "" && f.website.value == "") {
+					alert("Please fill out AT LEAST ONE of the three contact info fields (for users to contact you)");
+					return false;
+				}
+
 				return true;
 			}
 		</script>

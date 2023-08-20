@@ -79,6 +79,7 @@ body {
 	width: 100%;
 	height: 40%;
 	text-align: center;
+	outline: none;
 }
 
 .skillavate-input {
@@ -89,12 +90,20 @@ body {
 	border-bottom-color: var(--primary-color);
 }
 
+.skillavate-input::placeholder {
+	color: rgb(168, 168, 168);
+}
+
+.skillavate-input:invalid {
+	border-bottom-color: red;
+}
+
 .skillavate-input:focus {
 	color: var(--primary-color);
 	font-size: large;
 	border-bottom-width: 5px;
 	border-radius: 15px;
-	border-bottom-color: var(--secondary-color);
+	border-bottom-color: var(--primary-color);
 }
 
 .skillavate-label {
