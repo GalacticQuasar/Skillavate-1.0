@@ -153,7 +153,7 @@ app.get("/service/:id", async (req, res) => {
 	});
 	//res.send(await services_list.findOne({ _id: new ObjectId(req.params.id) }));
 });
-app.get("/editService/:id", async (req, res) => {
+app.get("/tutorDash/editService/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),
 	});
