@@ -82,9 +82,11 @@
 					<input
 						class="skillavate-input form-control"
 						type="tel"
+						id="phoneInput"
 						name="phone"
-						placeholder="XXX-XXX-XXXX"
-						pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
+						placeholder="###-###-####"
+						pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+						maxlength="12" />
 					<h2 class="mt-4">Email</h2>
 					<input class="skillavate-input form-control" type="email" name="email" placeholder="example@example.com" />
 					<h2 class="mt-4">Website</h2>
@@ -95,9 +97,9 @@
 						placeholder="https://www.example.com" />
 
 					<hr style="border-top: 3px solid var(--light-color); margin-top: 30px" />
-
+					<!-- PHOTO UPLOAD
 					<h2 class="mt-4">Photo Url (Optional)</h2>
-					<input class="skillavate-input form-control" type="image" id="photo-url" name="photo" />
+					<input class="skillavate-input form-control" type="image" id="photo-url" name="photo" /> -->
 				</fieldset>
 				<br />
 				<button class="btn" type="submit" onclick="return submitform()">Submit</button>
@@ -164,6 +166,22 @@
 											</p>
 										<input type="text" class="skillavate-input form-control" id="requestSkill" name="suggest" required />`;
 			}
+
+			//Phone number formatting
+			let phoneInput = document.getElementById("phoneInput");
+			let prevPhoneInputValue = "";
+			function formatPhone() {
+				if (phoneInput.value.length == 3 || phoneInput.value.length == 7) {
+					if (phoneInput.value.length > prevPhoneInputValue.length) {
+						phoneInput.value += "-";
+					} else {
+						phoneInput.value = phoneInput.value.substring(0, phoneInput.value.length - 1);
+					}
+				}
+				prevPhoneInputValue = phoneInput.value;
+			}
+
+			document.getElementById("phoneInput").addEventListener("input", formatPhone);
 
 			function submitform() {
 				let f = document.forms["myForm"];
