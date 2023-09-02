@@ -58,8 +58,8 @@ async function getOptions() {
 }
 
 // Middleware
-app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // for form data
 
@@ -149,6 +149,7 @@ app.get("/service/:id", async (req, res) => {
 app.get("/TutorDash", (req, res) => {
 	res.render("tutorDash");
 });
+
 app.get("/tutorDash/editService/:id", async (req, res) => {
 	const service = await services_list.findOne({
 		_id: new ObjectId(req.params.id),

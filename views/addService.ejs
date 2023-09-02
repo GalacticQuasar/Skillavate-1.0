@@ -14,6 +14,7 @@
 		<%- include('partials/header') %>
 
 		<div class="container mt-4 skillavate-form">
+			<img src="/skillavate-logo-horizontal.svg" class="center" style="margin-bottom: 20px" />
 			<h1 style="color: var(--primary-color); text-align: center">Service Information Form</h1>
 			<hr style="border-top: 3px solid var(--light-color)" />
 			<form action="/api/addService" method="post" name="myForm">
@@ -137,7 +138,7 @@
 				let skillGroup = document.getElementById("skill-group").value;
 				let skills = filter_options[skillGroup];
 				if (skills == null) {
-					return;
+					skillsCheckbox.innerHTML = "";
 				}
 
 				skillsCheckbox.innerHTML = "";
