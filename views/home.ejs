@@ -1,32 +1,56 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<meta name="theme-color" content="#008ca8" />
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="/style.css" />
-		<link rel="icon" href="/skillavate-icon.ico" />
-		<title>Skillavate</title>
-	</head>
-	<body>
-		<!-- Header -->
-		<%- include('partials/header') %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#008ca8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="/skillavate-icon.ico" />
+    <title>Skillavate</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <%- include('partials/header') %>
 
-		<div class="container" style="margin-top: 10px">
-			<!-- Sign Up Button -->
-			<a href="/signup" class="btn"> Sign Up </a>
-			<!-- Log In Button -->
-			<a href="/login" class="btn"> Log In </a>
-			<!-- View Services -->
-			<a href="/services" class="btn"> View Services </a>
-			<!-- Add Services -->
-			<a href="/addService" class="btn"> Add Services </a>
-			<!-- Edit Services(tutors only) -->
-			<a href="/tutorDash" class="btn"> Tutor Dashboard </a>
-		</div>
+    <div class="container" style="margin-top: 10px">
+      <!-- Edit Services(tutors only) -->
+      <!--<a href="/tutorDash" class="btn"> Tutor Dashboard </a>-->
+      <!-- Log In Button -->
+      <!--<a href="/login" style="float: right" class="btn"> Log In </a>-->
+    </div>
+    <hr style="border-top: 3px solid var(--light-color); margin-top: 25px" />
+    <div class="skillavate-tile-1 media" display="inline-block">
+      <div>
+        <h1 style="font-size: 100px; margin-bottom: 40px">What is Skillavate?</h1>
+        <p style="font-size: 40px">
+          We are a free service where students of all ages can connect to tutors, mainly in the Plano/Frisco area
+        </p>
+        <p style="font-size: 40px">
+          Tutors can advertise their services free of charge after they are approved by the administrators
+        </p>
+      </div>
+    </div>
+    <div class="skillavate-tile-2 media" style="display: flex">
+      <div>
+        <h1 style="font-size: 70px">Tutoring Services</h1>
+        <p style="font-size: 40px">Find tutoring services in any subject near you!</p>
+      </div>
+      <div style="margin-left: auto">
+        <a href="/services" class="btn-tile"> View Services </a>
+      </div>
+    </div>
+    <div class="skillavate-tile-3 media" style="display: flex">
+      <div>
+        <h1 style="font-size: 70px">Skillavate is looking for tutors</h1>
+        <p style="font-size: 40px">Put up your service today!</p>
+      </div>
+      <div style="margin-left: auto">
+        <a href="/addService" class="btn-tile"> Add Service </a>
+      </div>
+    </div>
 
-		<!-- Footer -->
-		<%- include('partials/footer') %>
-	</body>
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+  </body>
 </html>

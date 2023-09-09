@@ -142,9 +142,13 @@ app.get("/service/:id", async (req, res) => {
 	res.render("viewService", {
 		serviceTitle: service.title,
 		serviceDescription: service.description,
+		servicePhone: service.phone,
+		serviceEmail: service.email,
+		serviceWebsite: service.website,
+		serviceLocation: service.location
 	});
 });
-
+/*
 // TUTOR DASHBOARD PAGE
 app.get("/TutorDash", (req, res) => {
 	res.render("tutorDash");
@@ -165,13 +169,13 @@ app.get("/tutorDash/editService/:id", async (req, res) => {
 		servicePhoto: service.photoURL,
 		servicePublic: service.public,
 	});
-});
+});*/
 
 // ADD SERVICES PAGE
 app.get("/addService", (req, res) => {
 	res.render("addService");
 });
-
+/*
 // SIGN UP PAGE
 app.get("/signup", (req, res) => {
 	res.render("signup");
@@ -181,7 +185,7 @@ app.get("/signup", (req, res) => {
 app.get("/login", (req, res) => {
 	res.render("login");
 });
-
+*/
 app.listen(port, () => {
 	console.log(`Skillavate App listening on port ${port}`);
 });

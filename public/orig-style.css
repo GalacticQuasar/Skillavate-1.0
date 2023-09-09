@@ -10,6 +10,13 @@ h1 {
 	color: #00ffbf;
 }
 
+h2 {
+text-align: center;
+margin: 10px 0;
+
+color: #bcf7e9;
+}
+
 p {
 	text-align: center;
 	margin: 20px 0;
