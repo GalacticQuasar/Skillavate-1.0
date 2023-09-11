@@ -54,18 +54,25 @@
 				<hr style="border-top: 3px solid var(--light-color); margin-top: 30px" />
 
 				<fieldset>
-					<label for="enter-skill-group" class="skillavate-label" style="margin-top: 0px">Skill Group</label>
+					<label for="enter-skill-group" class="skillavate-label" style="margin-top: 0px"
+						>Skill Selection
+						<h4>(Choose skill group first to see individual skills)</h4></label
+					>
 					<select required class="skillavate-select" id="skill-group" style="height: 45px"></select>
+					<br />
+					<br />
 				</fieldset>
 				<fieldset>
-					<label class="skillavate-label">
+					<!-- <label class="skillavate-label">
 						<h2>Skills:</h2>
 						<h5 style="margin-bottom: 20px">(Select whichever skills are relevant to your service)</h5></label
-					>
+					> -->
 					<div id="skills"></div>
 					<!-- Hidden Skill Request Form -->
 					<div id="requestSkillDiv">
-						<button class="btn" type="button" onclick="return revealSkillRequestForm()">Request a Skill</button>
+						<button class="btn" type="button" onclick="return revealSkillRequestForm()">
+							Request a new skill for listing!
+						</button>
 					</div>
 				</fieldset>
 

@@ -67,13 +67,13 @@ body {
 	color: var(--light-color);
 	background-color: var(--primary-color);
 	border-radius: 20px;
-	padding:60px 100px;
+	padding: 60px 100px;
 	font-size: 40px;
 }
-.btn-tile:active{
+.btn-tile:active {
 	background-color: var(--dark-color);
 }
-.btn-tile:hover{
+.btn-tile:hover {
 	background-color: var(--secondary-color);
 }
 .media {
@@ -97,6 +97,7 @@ body {
 	box-shadow: 0px 0px 5px 3px var(--primary-color);
 	width: 750px;
 }
+
 .skillavate-tile-1 {
 	background: var(--secondary-color);
 	background-blend-mode: normal;
@@ -104,18 +105,16 @@ body {
 	padding-bottom: 300px;
 	padding-left: 25%;
 	padding-right: 25%;
-	
+
 	margin: 0px auto;
 	margin-top: 70px;
 	text-align: center;
-	
-	background-size:cover;
-	
+
+	background-size: cover;
+
 	width: 100%;
-	
-	
-	background-image: url("editedpic.jpg");
-	
+
+	background-image: url("home-image-1.jpg");
 }
 
 .skillavate-tile-2 {
@@ -126,15 +125,14 @@ body {
 	padding-left: 150px;
 	padding-right: 250px;
 	margin: 0 auto;
-	
-	background-size:cover;
-	
+
+	background-size: cover;
+
 	width: 100%;
-	
-	
-	background-image: url("fran-innocenti-I_LxDFIIRIA-unsplash.jpg");
-	
+
+	background-image: url("home-image-2.jpg");
 }
+
 .skillavate-tile-3 {
 	background: var(--secondary-color);
 	background-blend-mode: normal;
@@ -143,25 +141,26 @@ body {
 	padding-left: 150px;
 	padding-right: 250px;
 	margin: 0px auto;
-	
-	
-	background-size:cover;
-	
+
+	background-size: cover;
+
 	width: 100%;
-	
-	
-	background-image: url("kaleidico-7lryofJ0H9s-unsplash.jpg");
-	
+
+	background-image: url("home-image-3.jpg");
 }
+
 .skillavate-tile-1:hover {
 	background-blend-mode: multiply;
 }
+
 .skillavate-tile-2:hover {
 	background-blend-mode: multiply;
 }
+
 .skillavate-tile-3:hover {
 	background-blend-mode: multiply;
 }
+
 .skillavate-select {
 	color: var(--primary-color);
 	font-size: large;

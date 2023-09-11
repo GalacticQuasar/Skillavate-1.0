@@ -10,6 +10,12 @@ const services_list = client.db("skillavate").collection("experimental_list");
 const filter_options = client.db("skillavate").collection("filter_options");
 const skill_requests = client.db("skillavate").collection("skill_requests");
 
+// Middleware
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // for form data
+
 async function getServices(pSkill, pPublic) {
 	let filter = {};
 
@@ -56,12 +62,6 @@ async function getOptions() {
 
 	return options;
 }
-
-// Middleware
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // for form data
 
 // API
 app.post("/api/servicelist", async (req, res) => {
@@ -145,7 +145,7 @@ app.get("/service/:id", async (req, res) => {
 		servicePhone: service.phone,
 		serviceEmail: service.email,
 		serviceWebsite: service.website,
-		serviceLocation: service.location
+		serviceLocation: service.location,
 	});
 });
 /*
