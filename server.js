@@ -84,6 +84,7 @@ app.post("/api/addService", async (req, res) => {
 		description: info.description,
 		location: info.location,
 		skill: info.skill,
+		name: info.name,
 		phone: info.phone,
 		email: info.email,
 		website: info.website,
@@ -185,6 +186,7 @@ app.get("/service/:id", async (req, res) => {
 	res.render("viewService", {
 		serviceTitle: service.title,
 		serviceDescription: service.description,
+		serviceName: service.name,
 		servicePhone: service.phone,
 		serviceEmail: service.email,
 		serviceWebsite: service.website,
@@ -237,7 +239,6 @@ app.get("/admin", (req, res) => {
 });
 
 app.post("/admin", (req, res) => {
-	console.log(req.body.password);
 	if (req.body.password == adminPassword) {
 		res.render("admin");
 	} else {

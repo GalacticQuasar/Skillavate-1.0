@@ -16,8 +16,9 @@
 
 		<div class="container" style="width: 1000px; margin-top: 150px">
 			<div class="row">
-				<div class="col-7 align-self-center skillavate-div" style="padding: 25px">
+				<div class="col-7 skillavate-div" style="padding: 25px">
 					<h1 style="color: var(--primary-color)" style="text-align: center"><%= serviceTitle %></h1>
+					<hr style="border: 2px solid var(--light-color)" />
 					<p style="color: var(--light-color)"><%= serviceDescription %></p>
 				</div>
 
@@ -28,7 +29,9 @@
 				</div>
 
 				<div class="col skillavate-card align-self-center">
-					<h2>Contact Information:</h2>
+					<h2 style="color: var(--primary-color)">Contact Information:</h2>
+					<hr style="border: 2px solid var(--dark-color)" />
+					<p style="font-size: large">Name: <%= serviceName %></p>
 					<p style="font-size: large"><%= servicePhone != "" ? "Phone Number: " + servicePhone : ""%></p>
 					<p style="font-size: large"><%= serviceWebsite != "" ? "Website: " + serviceWebsite : ""%></p>
 					<p style="font-size: large"><%= serviceEmail != "" ? "Email: " + serviceEmail : ""%></p>

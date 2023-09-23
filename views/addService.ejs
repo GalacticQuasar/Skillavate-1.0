@@ -19,7 +19,7 @@
 			<hr style="border-top: 3px solid var(--light-color)" />
 			<form action="/api/addService" method="post" name="myForm">
 				<fieldset>
-					<label class="skillavate-label"><h2>Title</h2></label>
+					<label for="enter-title" class="skillavate-label"><h2>Title</h2></label>
 					<input
 						placeholder="Ex: Algebra 1 tutoring"
 						oninvalid="alert('Please enter a title for your service')"
@@ -87,7 +87,22 @@
 
 				<fieldset>
 					<h1 class="text-center">Contact Info</h1>
-					<p class="text-center">
+					<div style="display: flex; align-items: center">
+						<label for="enter-name" class="skillavate-label" style="flex: 1; margin: auto">
+							<h2 style="margin: 0">Name:</h2>
+						</label>
+						<input
+							placeholder="Ex: Tutorguy Tortellini"
+							oninvalid="alert('Please enter your name.')"
+							required
+							type="text"
+							id="enter-name"
+							name="name"
+							style="flex: 4; margin: auto"
+							class="skillavate-input form-control" />
+					</div>
+
+					<p class="text-center mt-4">
 						Fill out
 						<u>at least one</u>
 						of the three fields below so that users may contact you regarding your service.

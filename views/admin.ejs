@@ -104,9 +104,11 @@
 						<div class="card-body">
 							<h5 class="card-title" style="color: var(--primary-color)">${elem.title}</h5>
 							<p>${elem.description}</p>
-                            <p>${elem.phone != null ? elem.phone : null}</p>
-                            <p>${elem.email != null ? elem.email : null}</p>
-                            <p>${elem.website != null ? elem.website : null}</p>
+							<hr style="border: 2px solid var(--dark-color);" />
+							<p>${elem.name != "" ? "Name: " + elem.name : ""}</p>
+                            <p>${elem.phone != "" ? "Phone: " + elem.phone : ""}</p>
+                            <p>${elem.email != "" ? "Email: " + elem.email : ""}</p>
+                            <p>${elem.website != "" ? "Website: " + elem.website : ""}</p>
 							<a
 								href="/service/${elem._id}"
 								class="btn btn-primary"
