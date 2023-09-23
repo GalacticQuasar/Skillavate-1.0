@@ -114,7 +114,7 @@
 						},
 						body: JSON.stringify({
 							skill: querySkill,
-							public: "true",
+							public: true,
 						}),
 					}).then((res) => res.json())
 				);
@@ -139,7 +139,7 @@
 						},
 						body: JSON.stringify({
 							skill: querySkill,
-							public: "true",
+							public: true,
 						}),
 					}).then((res) => res.json())
 				);
@@ -151,6 +151,7 @@
 
 			// Populate Service Grid
 			async function updateServiceGrid(serviceList) {
+				console.log(serviceList);
 				document.getElementById("servicelist").innerHTML = "";
 
 				serviceList.forEach((elem) => {
