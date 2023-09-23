@@ -31,16 +31,19 @@
 					<label for="enter-description" class="skillavate-label"><h2>Description</h2></label>
 					<textarea
 						required
+						oninput="resizeDescription(this)"
+						style="overflow: hidden"
+						maxlength="3000"
 						oninvalid="alert('Please enter a description for your service.')"
 						class="skillavate-input form-control"
 						name="description"
 						id="enter-description"
-						placeholder="Tell us about what you offer in your service, and maybe even a little bit about yourself!"></textarea>
+						placeholder="Tell users about your service (tutoring, private lessons, etc.), and maybe even something about yourself!"></textarea>
 				</fieldset>
 				<fieldset>
 					<label for="enter-location" class="skillavate-label"><h2>Zip Code</h2></label>
 					<input
-						placeholder="(This will be used to give relevant search results to users)"
+						placeholder="(This will be used to give relevant search results to users in your area)"
 						oninvalid="alert('Please enter a valid zip code (5 characters)')"
 						type="text"
 						required
@@ -54,10 +57,14 @@
 				<hr style="border-top: 3px solid var(--light-color); margin-top: 30px" />
 
 				<fieldset>
-					<label for="enter-skill-group" class="skillavate-label" style="margin-top: 0px"
-						>Skill Selection
-						<h4>(Choose skill group first to see individual skills)</h4></label
-					>
+					<label for="enter-skill-group" class="skillavate-label" style="margin-top: 0px">
+						Skill Selection
+						<h6>
+							*Users will filter their search results by skill; select the skills that appropriately describe your
+							service.*
+						</h6>
+						<h6>(Choose skill group first to see individual skills)</h6>
+					</label>
 					<select required class="skillavate-select" id="skill-group" style="height: 45px"></select>
 					<br />
 					<br />
@@ -139,6 +146,11 @@
 
 				updateSkills();
 			})();
+
+			function resizeDescription(element) {
+				element.style.height = "78px";
+				element.style.height = element.scrollHeight + "px";
+			}
 
 			function updateSkills() {
 				let skillsCheckbox = document.getElementById("skills");

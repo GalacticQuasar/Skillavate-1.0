@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="theme-color" content="#008ca8" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/style.css" />
+		<link rel="stylesheet" href="/style.css" />
+		<link rel="icon" href="/skillavate-icon.ico" />
+		<title>Skillavate</title>
+	</head>
+	<body>
+		<!-- Header -->
+		<%- include('partials/header') %>
+
+		<select required class="skillavate-select center mt-4" id="publicToggle" style="height: 45px; width: 200px">
+			<option value="0">Unverified</option>
+			<option value="1">Public</option>
+		</select>
+		<button onclick="updateServiceGrid()" class="btn center mt-4">--- UPDATE ---</button>
+
+		<div id="servicelist" class="skillavate-div container" style="width: 1000px; padding: 50px; margin-top: 50px"></div>
+
+		<!-- Footer -->
+		<%- include('partials/footer') %>
+	</body>
+	<script>
+		const select = document.getElementById("publicToggle");
+		updateServiceGrid();
+
+		async function verifyService(verify, id) {
+			const status = await fetch("/api/verify", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					_id: id,
+					verify: verify,
+				}),
+			}).then((res) => res.json());
+
+			let serviceBox = document.getElementById(id);
+
+			console.log(verify);
+
+			if (status.acknowledged) {
+				switch (verify) {
+					case "verify":
+						serviceBox.innerHTML = `<h1 style="color: white; text-align: center">Service successfully VERIFIED</h1>`;
+						serviceBox.style = "background-color: green";
+						break;
+					case "unverify":
+						serviceBox.innerHTML = `<h1 style="color: white; text-align: center">Service successfully UNVERIFIED</h1>`;
+						serviceBox.style = "background-color: purple";
+						break;
+					case "delete":
+						serviceBox.innerHTML = `<h1 style="color: white; text-align: center">Service successfully DELETED</h1>`;
+						serviceBox.style = "background-color: red";
+						break;
+					default:
+						serviceBox.innerHTML = `<h1 style="color: white; text-align: center">Invalid Verification Status</h1>`;
+						serviceBox.style = "background-color: black";
+				}
+			} else {
+				serviceBox.innerHTML = `<h1 style="color: white; text-align: center">ERROR: DATABASE DID NOT WRITE/DELETE CORRECTLY</h1>`;
+				serviceBox.style = "background-color: red";
+			}
+		}
+
+		async function updateServiceGrid() {
+			let serviceList = await fetch("/api/servicelist", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					public: select.value != 0,
+				}),
+			}).then((res) => res.json());
+
+			document.getElementById("servicelist").innerHTML = "";
+
+			serviceList.forEach((elem) => {
+				let gridDiv = document.createElement("div");
+				gridDiv.setAttribute("class", "col");
+				gridDiv.style = "margin-top: 20px;";
+
+				// Middle Button Configuration
+				if (select.value == 0) {
+					// Verify Button
+					middleButton = `<button onclick="verifyService('verify', '${elem._id}')" class="btn" style="background-color: green">Verify</button>`;
+				} else if (select.value == 1) {
+					// Unverify Button
+					middleButton = `<button onclick="verifyService('unverify', '${elem._id}')" class="btn" style="background-color: purple">UNVERIFY</button>`;
+				}
+
+				gridDiv.innerHTML = `
+					<div id="${elem._id}" class="skillavate-card">
+						<img class="card-img-top" src="/skillavate-icon.svg" alt="Card image cap" width="50" height="100">
+						<div class="card-body">
+							<h5 class="card-title" style="color: var(--primary-color)">${elem.title}</h5>
+							<p>${elem.description}</p>
+                            <p>${elem.phone != null ? elem.phone : null}</p>
+                            <p>${elem.email != null ? elem.email : null}</p>
+                            <p>${elem.website != null ? elem.website : null}</p>
+							<a
+								href="/service/${elem._id}"
+								class="btn btn-primary"
+								>View Service</a
+							>
+                            ${middleButton}
+                            <button onclick="verifyService('delete', '${
+															elem._id
+														}')" class="btn" style="background-color: red">DELETE</button>
+						</div>
+					</div>`;
+
+				document.getElementById("servicelist").appendChild(gridDiv);
+			});
+		}
+	</script>
+</html>

@@ -1,14 +1,15 @@
 import express from "express";
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient, ObjectId, WriteConcern } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
 const port = 80;
 const client = new MongoClient(process.env.mongoUrl);
-const services_list = client.db("skillavate").collection("experimental_list");
+const services_list = client.db("skillavate").collection("services_list");
 const filter_options = client.db("skillavate").collection("filter_options");
 const skill_requests = client.db("skillavate").collection("skill_requests");
+const adminPassword = "thryve";
 
 // Middleware
 app.set("view engine", "ejs");
@@ -38,7 +39,7 @@ async function getServices(pSkill, pPublic) {
 	}
 
 	if (pPublic == null) {
-		pPublic = "true";
+		pPublic = true;
 	}
 
 	filter.public = pPublic;
@@ -87,7 +88,7 @@ app.post("/api/addService", async (req, res) => {
 		email: info.email,
 		website: info.website,
 		photoURL: info.photo,
-		public: "true", //default
+		public: false, //default
 	});
 
 	if (info.suggest != null) {
@@ -121,6 +122,48 @@ app.post("/api/updateService", (req, res) => {
 		}
 	);
 	res.redirect("/tutorDash");
+});
+
+app.post("/api/verify", async (req, res) => {
+	let info = req.body;
+
+	switch (info.verify) {
+		case "verify":
+			res.send(
+				await services_list.updateOne(
+					{
+						_id: new ObjectId(info._id),
+					},
+					{
+						$set: {
+							public: true,
+						},
+					}
+				)
+			);
+			break;
+		case "unverify":
+			res.send(
+				await services_list.updateOne(
+					{
+						_id: new ObjectId(info._id),
+					},
+					{
+						$set: {
+							public: false,
+						},
+					}
+				)
+			);
+			break;
+		case "delete":
+			res.send(
+				await services_list.deleteOne({
+					_id: new ObjectId(info._id),
+				})
+			);
+			break;
+	}
 });
 
 // HOME PAGE
@@ -187,6 +230,28 @@ app.get("/login", (req, res) => {
 	res.render("login");
 });
 */
+
+// ADMIN PAGE
+app.get("/admin", (req, res) => {
+	res.render("authenticateAdmin");
+});
+
+app.post("/admin", (req, res) => {
+	console.log(req.body.password);
+	if (req.body.password == adminPassword) {
+		res.render("admin");
+	} else {
+		res.send("L");
+	}
+});
+// app.get("/admin/:pass", (req, res) => {
+// 	if (req.params.pass == adminPassword) {
+// 		res.render("admin");
+// 	} else {
+// 		res.send("L");
+// 	}
+// });
+
 app.listen(port, () => {
 	console.log(`Skillavate App listening on port ${port}`);
 });

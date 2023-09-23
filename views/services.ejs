@@ -65,8 +65,7 @@
 							"Content-Type": "application/json",
 						},
 						body: JSON.stringify({
-							skill: null,
-							public: "true",
+							public: true,
 						}),
 					}).then((res) => res.json())
 				);
@@ -164,10 +163,11 @@
 						<img class="card-img-top" src="/skillavate-icon.svg" alt="Card image cap" width="50" height="100">
 						<div class="card-body">
 							<h5 class="card-title" style="color: var(--primary-color)">${elem.title}</h5>
-							<p class="card-text">${elem.description}</p>
+							<hr style="border: 2px solid var(--dark-color);" />
+							<p class="skillavate-card-text">${elem.description}</p>
 							<a
 								href="/service/${elem._id}"
-								class="btn btn-primary"
+								class="btn btn-primary center"
 								>View Service</a
 							>
 						</div>
