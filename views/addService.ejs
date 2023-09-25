@@ -44,8 +44,9 @@
 					<label for="enter-location" class="skillavate-label"><h2>Zip Code</h2></label>
 					<input
 						placeholder="(This will be used to give relevant search results to users in your area)"
-						oninvalid="alert('Please enter a valid zip code (5 characters)')"
+						oninvalid="alert('Please enter a valid zip code (5 numerical characters)')"
 						type="text"
+						pattern="[0-9]"
 						required
 						class="skillavate-input form-control"
 						name="location"
