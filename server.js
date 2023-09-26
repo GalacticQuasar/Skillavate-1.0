@@ -82,7 +82,7 @@ app.post("/api/addService", async (req, res) => {
 	let document = await services_list.insertOne({
 		title: info.title,
 		description: info.description,
-		location: info.location,
+		zip: info.zip,
 		skill: info.skill,
 		name: info.name,
 		phone: info.phone,
@@ -99,7 +99,7 @@ app.post("/api/addService", async (req, res) => {
 		});
 	}
 
-	res.redirect("/");
+	res.render("addServiceResponse");
 });
 
 app.post("/api/updateService", (req, res) => {
@@ -113,7 +113,7 @@ app.post("/api/updateService", (req, res) => {
 			$set: {
 				title: info.title,
 				description: info.description,
-				location: info.location,
+				zip: info.zip,
 				phone: info.phone,
 				email: info.email,
 				website: info.website,
@@ -190,7 +190,7 @@ app.get("/service/:id", async (req, res) => {
 		servicePhone: service.phone,
 		serviceEmail: service.email,
 		serviceWebsite: service.website,
-		serviceLocation: service.location,
+		serviceZip: service.zip,
 	});
 });
 /*
@@ -208,7 +208,7 @@ app.get("/tutorDash/editService/:id", async (req, res) => {
 		serviceID: service._id,
 		serviceTitle: service.title,
 		serviceDescription: service.description,
-		serviceZipcode: service.location,
+		serviceZip: service.zip,
 		servicePhone: service.phone,
 		serviceEmail: service.email,
 		serviceWebsite: service.website,

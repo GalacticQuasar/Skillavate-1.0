@@ -13,11 +13,11 @@
 		<!-- Header -->
 		<%- include('partials/header') %>
 
-		<div class="container mt-4 skillavate-form">
+		<div id="mainDiv" class="container mt-4 skillavate-form">
 			<img src="/skillavate-logo-horizontal.svg" class="center" style="margin-bottom: 20px" />
 			<h1 style="color: var(--primary-color); text-align: center">Service Information Form</h1>
 			<hr style="border-top: 3px solid var(--light-color)" />
-			<form action="/api/addService" method="post" name="myForm">
+			<form action="/api/addService" method="post" name="myForm" id="myForm">
 				<fieldset>
 					<label for="enter-title" class="skillavate-label"><h2>Title</h2></label>
 					<input
@@ -41,16 +41,16 @@
 						placeholder="Tell users about your service (tutoring, private lessons, etc.), and maybe even something about yourself!"></textarea>
 				</fieldset>
 				<fieldset>
-					<label for="enter-location" class="skillavate-label"><h2>Zip Code</h2></label>
+					<label for="enter-zip" class="skillavate-label"><h2>Zip Code</h2></label>
 					<input
 						placeholder="(This will be used to give relevant search results to users in your area)"
 						oninvalid="alert('Please enter a valid zip code (5 numerical characters)')"
 						type="text"
-						pattern="[0-9]"
+						pattern="[0-9]{5}"
 						required
 						class="skillavate-input form-control"
-						name="location"
-						id="enter-location"
+						name="zip"
+						id="enter-zip"
 						maxlength="5"
 						minlength="5" />
 				</fieldset>
@@ -58,7 +58,7 @@
 				<hr style="border-top: 3px solid var(--light-color); margin-top: 30px" />
 
 				<fieldset>
-					<label for="enter-skill-group" class="skillavate-label" style="margin-top: 0px">
+					<label for="skill-group" class="skillavate-label" style="margin-top: 0px">
 						Subject and Skill Level Selection
 						<h6>
 							*Users will filter their search results by subject; select the subject and skill level(s) that are
@@ -133,9 +133,18 @@
 					<input class="skillavate-input form-control" type="image" id="photo-url" name="photo" /> -->
 				</fieldset>
 				<br />
-				<button class="btn" type="submit" onclick="return submitform()">Submit</button>
+				<button
+					class="btn center"
+					type="submit"
+					style="height: 50px; border-radius: 15px"
+					onclick="return submitForm()">
+					Submit
+				</button>
 			</form>
 		</div>
+
+		<!-- Footer -->
+		<%- include('partials/footer') %>
 
 		<script>
 			(async () => {
@@ -174,6 +183,7 @@
 				let skills = filter_options[skillGroup];
 				if (skills == null) {
 					skillsCheckbox.innerHTML = "";
+					return;
 				}
 
 				skillsCheckbox.innerHTML = "";
@@ -219,8 +229,9 @@
 
 			document.getElementById("phoneInput").addEventListener("input", formatPhone);
 
-			function submitform() {
-				let f = document.forms["myForm"];
+			// Form submission additional input validation
+			function submitForm() {
+				let myForm = document.forms["myForm"];
 				let checkboxes = document.querySelectorAll('input[type="checkbox"]');
 				let isChecked = false;
 
@@ -231,22 +242,28 @@
 					}
 				}
 
-				if (!isChecked || f.skill == undefined) {
+				if (!isChecked || myForm.skill == undefined) {
 					alert(
-						"Please select at least one skill to be attributed with your service (this helps users search for relevant services)"
+						"Please select at least one skill level selection to be attributed with your service (this helps users search for relevant services)"
 					);
 					return false;
 				}
 
-				if (f.email.value == "" && f.phone.value == "" && f.website.value == "") {
+				if (myForm.email.value == "" && myForm.phone.value == "" && myForm.website.value == "") {
 					alert("Please fill out AT LEAST ONE of the three contact info fields (for users to contact you)");
 					return false;
 				}
 
 				return true;
 			}
+
+			// function displayThankYou() {
+			// 	let mainDiv = document.getElementById("mainDiv");
+			// 	let myForm = document.forms["myForm"];
+			// 	myForm.hidden = true;
+			// 	mainDiv.innerHTML += `<h1 style="text-align: center">Thank you for contributing to our tutor search service!</h1>
+			//                 <p style="text-align: center">Your service listing will be made public after a human verification process :)</p>`;
+			// }
 		</script>
-		<!-- Footer -->
-		<%- include('partials/footer') %>
 	</body>
 </html>
