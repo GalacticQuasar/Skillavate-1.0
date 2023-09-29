@@ -190,7 +190,6 @@ app.get("/service/:id", async (req, res) => {
 		servicePhone: service.phone,
 		serviceEmail: service.email,
 		serviceWebsite: service.website,
-		serviceZip: service.zip,
 	});
 });
 /*
