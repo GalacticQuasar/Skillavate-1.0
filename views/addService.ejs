@@ -59,12 +59,12 @@
 
 				<fieldset>
 					<label for="skill-group" class="skillavate-label" style="margin-top: 0px">
-						Subject and Skill Level Selection
+						Subject and Skill Selection
 						<h6>
 							*Users will filter their search results by subject; select the subject and skill level(s) that are
 							appropriate for your service.*
 						</h6>
-						<h6>(Choose skill group first to see individual skills)</h6>
+						<h6>(Choose subject first to see individual skills)</h6>
 					</label>
 					<select required class="skillavate-select" id="skill-group" style="height: 45px"></select>
 					<br />
@@ -155,8 +155,8 @@
 				//First Option (SELECT SKILL GROUP TO SELECT SKILLS)
 				let firstOption = document.createElement("option");
 
-				firstOption.value = "**Select a skill group here**";
-				firstOption.label = "**Select a skill group here**";
+				firstOption.value = "**Select a subject here**";
+				firstOption.label = "**Select a subject here**";
 
 				document.getElementById("skill-group").appendChild(firstOption);
 
