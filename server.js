@@ -244,13 +244,10 @@ app.post("/admin", (req, res) => {
 		res.send("L");
 	}
 });
-// app.get("/admin/:pass", (req, res) => {
-// 	if (req.params.pass == adminPassword) {
-// 		res.render("admin");
-// 	} else {
-// 		res.send("L");
-// 	}
-// });
+
+app.get("/legal", (req, res) => {
+	res.render("legal");
+});
 
 app.listen(port, () => {
 	console.log(`Skillavate App listening on port ${port}`);

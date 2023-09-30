@@ -1,24 +1,26 @@
 <!-- Footer -->
 <footer class="footer">
-  <!-- Footer -->
-  <footer class="text-center text-white" style="background-color: var(--primary-color)">
-    <!-- Register As Tutor -->
-    <div class="container p-3 pb-0">
-      <section hidden class="">
-        <p class="d-flex justify-content-center align-items-center">
-          <span class="me-3">Register as a tutor:</span>
-          <button type="button" class="btn" onclick="window.location.href='/signup';">Sign up!</button>
-        </p>
-      </section>
-    </div>
+	<!-- Footer -->
+	<footer class="text-center text-white" style="background-color: var(--primary-color)">
+		<!-- Register As Tutor -->
+		<div class="container p-3 pb-0">
+			<section hidden class="">
+				<p class="d-flex justify-content-center align-items-center">
+					<span class="me-3">Register as a tutor:</span>
+					<button type="button" class="btn" onclick="window.location.href='/signup';">Sign up!</button>
+				</p>
+			</section>
+		</div>
 
-    <!-- Copyright -->
-    <div id="copyrightContainer" class="text-center p-1" style="background-color: var(--dark-color)">
-      <!-- Insert current year and link through script -->
-    </div>
-  </footer>
+		<!-- Copyright -->
+		<div id="copyrightContainer" class="text-center p-1" style="background-color: var(--dark-color)">
+			<!-- Insert current year and link through script -->
+		</div>
+	</footer>
 </footer>
 <script>
-  document.getElementById("copyrightContainer").innerHTML = `© ${new Date().getFullYear()} Copyright:
-            <a class="text-white" href="https://skillavate.com/">skillavate.com</a>`;
+	document.getElementById("copyrightContainer").innerHTML = `© ${new Date().getFullYear()} Copyright:
+            <a class="text-white" href="https://skillavate.com/">skillavate.com</a>
+            |
+            <a class="text-white" href="https://skillavate.com/legal">ToS & Privacy Policy</a>`;
 </script>
