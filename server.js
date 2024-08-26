@@ -9,7 +9,6 @@ const client = new MongoClient(process.env.mongoUrl);
 const services_list = client.db("skillavate").collection("services_list");
 const filter_options = client.db("skillavate").collection("filter_options");
 const skill_requests = client.db("skillavate").collection("skill_requests");
-const adminPassword = "thryve6#";
 
 // Middleware
 app.set("view engine", "ejs");
@@ -238,7 +237,7 @@ app.get("/admin", (req, res) => {
 });
 
 app.post("/admin", (req, res) => {
-	if (req.body.password == adminPassword) {
+	if (req.body.password == process.env.adminPassword) {
 		res.render("admin");
 	} else {
 		res.send("L");
